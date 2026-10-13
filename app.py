@@ -4,7 +4,7 @@ import joblib
 
 st.title("Starbucks Calories Predictor")
 
-saved_data = joblib.load("decision_tree_model.pkl")
+from pathlib import Path
 model = saved_data["model"]
 features = saved_data["features"]
 
