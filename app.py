@@ -17,11 +17,11 @@ prep = st.selectbox("Select Beverage Preparation", sorted(df["Beverage_prep"].dr
 row = df[(df["Beverage"] == drink) & (df["Beverage_prep"] == prep)]
 
 if st.button("Predict Calories"):
-if row.empty:
-st.warning("Beverage not found.")
-else:
-input_row = row.drop(columns=["Calories"])
-input_row = pd.get_dummies(input_row, drop_first=True, dtype=int)
-input_row = input_row.reindex(columns=features, fill_value=0)
-prediction = model.predict(input_row)[0]
-st.success(f"Predicted Calories: {prediction:.0f}")
+    if row.empty:
+        st.warning("Beverage not found.")
+    else:
+        input_row = row.drop(columns=["Calories"])
+        input_row = pd.get_dummies(input_row, drop_first=True, dtype=int)
+        input_row = input_row.reindex(columns=features, fill_value=0)
+        prediction = model.predict(input_row)[0]
+        st.success(f"Predicted Calories: {prediction:.0f}")
