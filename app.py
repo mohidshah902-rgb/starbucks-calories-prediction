@@ -4,7 +4,12 @@ import joblib
 
 st.title("Starbucks Calories Predictor")
 
-from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_PATH = BASE_DIR / "decision_tree_model.pkl"
+
+st.write("Files found:", [f.name for f in BASE_DIR.iterdir()])
+
+saved_data = joblib.load(MODEL_PATH)
 model = saved_data["model"]
 features = saved_data["features"]
 
