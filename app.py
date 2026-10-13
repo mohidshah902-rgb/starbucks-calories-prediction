@@ -11,6 +11,8 @@ MODEL_PATH = BASE_DIR / "decision_tree_model.pkl"
 st.write("Files found:", [f.name for f in BASE_DIR.iterdir()])
 
 saved_data = joblib.load(MODEL_PATH)
+st.write("Model loaded successfully!")
+st.write(type(saved_data))
 model = saved_data["model"]
 features = saved_data["features"]
 
