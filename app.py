@@ -2,10 +2,7 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-st.set_page_config(page_title="Starbucks Calories Predictor", page_icon="☕")
-
-st.title("Starbucks Calories Predictor ☕")
-st.write("Predict the calories of your Starbucks drink using Machine Learning.")
+st.title("Starbucks Calories Predictor")
 
 saved_data = joblib.load("decision_tree_model.pkl")
 model = saved_data["model"]
@@ -14,47 +11,17 @@ features = saved_data["features"]
 df = pd.read_csv("starbucks.csv")
 df.columns = df.columns.str.strip()
 
-st.subheader("Select Your Drink")
+drink = st.selectbox("Select Beverage", sorted(df["Beverage"].dropna().unique()))
+prep = st.selectbox("Select Beverage Preparation", sorted(df["Beverage_prep"].dropna().unique()))
 
-input_data = {}
-
-for col in df.columns:
-if col == "Calories":
-continue
-
-```
-if pd.api.types.is_numeric_dtype(df[col]):
-    value = st.number_input(
-        f"Enter {col}",
-        value=float(df[col].median())
-    )
-    input_data[col] = value
-
-else:
-    options = df[col].dropna().astype(str).unique().tolist()
-
-    if len(options) > 0:
-        input_data[col] = st.selectbox(
-            f"Select {col}",
-            options
-        )
-```
+row = df[(df["Beverage"] == drink) & (df["Beverage_prep"] == prep)]
 
 if st.button("Predict Calories"):
-row = pd.DataFrame([input_data])
-
-```
-row = pd.get_dummies(
-    row,
-    drop_first=True,
-    dtype=int
-)
-
-row = row.reindex(columns=features, fill_value=0)
-
-prediction = model.predict(row)[0]
-
-st.success(f"Predicted Calories: {prediction:.0f} calories")
-```
-
-st.caption("Powered by Decision Tree Machine Learning")
+if row.empty:
+st.warning("Beverage not found.")
+else:
+input_row = row.drop(columns=["Calories"])
+input_row = pd.get_dummies(input_row, drop_first=True, dtype=int)
+input_row = input_row.reindex(columns=features, fill_value=0)
+prediction = model.predict(input_row)[0]
+st.success(f"Predicted Calories: {prediction:.0f}")
