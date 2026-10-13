@@ -6,7 +6,7 @@ from pathlib import Path
 st.title("Starbucks Calories Predictor")
 
 BASE_DIR = Path(__file__).resolve().parent
-MODEL_PATH = BASE_DIR / "decision_tree_model.pkl"
+MODEL_PATH = BASE_DIR / "decision_tree_model(1).pkl"
 
 st.write("Files found:", [f.name for f in BASE_DIR.iterdir()])
 
